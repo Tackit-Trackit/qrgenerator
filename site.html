@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Dog Details</title>
+    <style>
+        /* Your styles here */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Lost Dog Details</h1>
+        </div>
+        <form id="lostDogForm" onsubmit="handleSubmit(event)">
+            <div class="details">
+                <h2>Dog's Information:</h2>
+                <label for="dogName">Name:</label>
+                <input type="text" id="dogName" name="dogName" required><br>
+                <label for="dogBreed">Breed:</label>
+                <input type="text" id="dogBreed" name="dogBreed" required><br>
+                <label for="dogColor">Color:</label>
+                <input type="text" id="dogColor" name="dogColor" required><br>
+                <label for="distinctiveFeatures">Distinctive Features:</label>
+                <input type="text" id="distinctiveFeatures" name="distinctiveFeatures"><br>
+            </div>
+            <div class="details">
+                <h2>Contact Information:</h2>
+                <label for="ownerName">Owner's Name:</label>
+                <input type="text" id="ownerName" name="ownerName" required><br>
+                <label for="ownerEmail">Contact Email:</label>
+                <input type="email" id="ownerEmail" name="ownerEmail" required><br>
+                <label for="ownerPhone">Contact Phone:</label>
+                <input type="tel" id="ownerPhone" name="ownerPhone" required><br>
+            </div>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="output"></div>
+        <div id="qrcode"></div>
+
+        <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+        <script>
+            function handleSubmit(event) {
+                event.preventDefault(); // Prevent the form from submitting in the traditional way
+
+                // Get form data
+                const formData = new FormData(event.target);
+
+                // Create an object to store the form data
+                const dogDetails = {};
+                formData.forEach((value, key) => {
+                    dogDetails[key] = value;
+                });
+
+                // Display the data on the output page
+                displayData(dogDetails);
+
+                // Generate QR code from the displayed output
+                generateQRCode(JSON.stringify(dogDetails));
+            }
+
+            function displayData(data) {
+                const outputDiv = document.getElementById('output');
+                outputDiv.innerHTML = `
+                    <h2>Lost Dog Details:</h2>
+                    <p><strong>Name:</strong> ${data.dogName}</p>
+                    <p><strong>Breed:</strong> ${data.dogBreed}</p>
+                    <p><strong>Color:</strong> ${data.dogColor}</p>
+                    <p><strong>Distinctive Features:</strong> ${data.distinctiveFeatures}</p>
+                    <h2>Contact Information:</h2>
+                    <p><strong>Owner's Name:</strong> ${data.ownerName}</p>
+                    <p><strong>Contact Email:</strong> ${data.ownerEmail}</p>
+                    <p><strong>Contact Phone:</strong> ${data.ownerPhone}</p>
+                `;
+            }
+
+            function generateQRCode(data) {
+                const qrCodeDiv = document.getElementById('qrcode');
+
+                // Generate QR code using a library like QRCode.js
+                const qrcode = new QRCode(qrCodeDiv, {
+                    text: data,
+                    width: 128,
+                    height: 128
+                });
+            }
+        </script>
+    </div>
+</body>
+
+</html>
